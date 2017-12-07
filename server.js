@@ -14,7 +14,7 @@ app.get("/flowers", function(req, res) {
     var sql = "SELECT * FROM FLOWERS";
     db.all(sql, [], (err, rows) => {
         if (err) {
-            throw err;
+            console.log(err);
         }
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ data: rows }));
@@ -27,7 +27,7 @@ app.get("/sightings/:comname", function(req, res) {
         "' LIMIT 10";
     db.all(sql, [], (err, rows) => {
         if (err) {
-            throw err;
+            console.log(err);
         }
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ data: rows }));
@@ -51,12 +51,12 @@ app.post("/update", function(req, res) {
         "'";
     db.all(sql, [], (err, rows) => {
         if (err) {
-            throw err;
+            console.log(err);
         } else {
             var sql = "SELECT * FROM FLOWERS";
             db.all(sql, [], (err, rows) => {
                 if (err) {
-                    throw err;
+                    console.log(err);
                 }
                 res.writeHead(200, { "Content-Type": "application/json" });
                 res.end(JSON.stringify({ data: rows }));
@@ -80,15 +80,14 @@ app.post("/insert", function(req, res) {
         "','" +
         sighted +
         "')";
-    console.log(sql);
     db.all(sql, [], (err, rows) => {
         if (err) {
-            throw err;
+            console.log(err);
         } else {
             var sql = "SELECT * FROM FLOWERS";
             db.all(sql, [], (err, rows) => {
                 if (err) {
-                    throw err;
+                    console.log(err);
                 }
                 res.writeHead(200, { "Content-Type": "application/json" });
                 res.end(JSON.stringify({ data: rows }));
@@ -96,6 +95,6 @@ app.post("/insert", function(req, res) {
         }
     });
 });
-
-app.listen(3000);
-console.log("Listening on 3000");
+var port = process.env.PORT || 3000;
+app.listen(port);
+console.log("Listening on " + port);
