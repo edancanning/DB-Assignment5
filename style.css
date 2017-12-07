@@ -39,6 +39,17 @@ h3 {
     color: #636262;
 }
 
+label {
+    font-weight: bold;
+}
+
+.input {
+    text-align: left;
+    display: inline-block;
+    width: 32%;
+    padding: 0 0.5rem;
+}
+
 .wrapper {
     margin: 0 auto;
     padding: 40px;
@@ -123,4 +134,98 @@ h3 {
         padding: 2px 16px;
         display: block;
     }
+}
+
+@import url(https://fonts.googleapis.com/css?family=Merriweather);
+*,
+*:before,
+*:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background: #f1f1f1;
+    font-family: "Merriweather", sans-serif;
+    padding: 1em;
+}
+
+h1 {
+    text-align: center;
+    color: #a8a8a8;
+    text-shadow: 1px 1px 0 white;
+}
+
+form {
+    text-align: center;
+}
+
+form input,
+form textarea {
+    border: 0;
+    outline: 0;
+    padding: 1em;
+    display: block;
+    width: 100%;
+    margin-top: 1em;
+    font-family: "Merriweather", sans-serif;
+    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    resize: none;
+}
+form input:focus,
+form textarea:focus {
+    -moz-box-shadow: 0 0px 2px #2d9cdb !important;
+    -webkit-box-shadow: 0 0px 2px #2d9cdb !important;
+    box-shadow: 0 0px 2px #2d9cdb !important;
+}
+form #input-submit {
+    color: white;
+    background: #2d9cdb;
+    cursor: pointer;
+}
+form #input-submit:hover {
+    -moz-box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
+    -webkit-box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
+    box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
+}
+form textarea {
+    height: 126px;
+}
+
+.half {
+    float: left;
+    width: 48%;
+    margin-bottom: 1em;
+}
+
+.right {
+    width: 50%;
+}
+
+.left {
+    margin-right: 2%;
+}
+
+@media (max-width: 480px) {
+    .half {
+        width: 100%;
+        float: none;
+        margin-bottom: 0;
+    }
+}
+/* Clearfix */
+.cf:before,
+.cf:after {
+    content: " ";
+    /* 1 */
+    display: table;
+    /* 2 */
+}
+
+.cf:after {
+    clear: both;
 }
