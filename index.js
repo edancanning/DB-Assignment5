@@ -7,7 +7,13 @@ $(document).ready(function() {
         type: "GET",
         url: "/flowers",
         dataType: "json"
-    }).done(function(flowers) {
+    }).done(render);
+
+    function render(flowers, curr) {
+        $table.empty();
+        $table.append(
+            "<div class='row header'> <div class='cell'> Genus </div> <div class='cell'> Species </div> <div class='cell'> Common Name </div>"
+        );
         flowers.data.forEach(function(flower) {
             var markup =
                 "<div class='row'> <div class='cell' data-title='Genus'> " +
@@ -19,32 +25,63 @@ $(document).ready(function() {
                 " </div> </div>";
 
             var $flower = $(markup);
+
+            var currClick;
+            if (curr === flower.COMNAME) {
+                currClick = $flower;
+            }
             $flower.on("click", function() {
                 var $this = $(this);
                 $("#current").attr("id", "");
                 $this.attr("id", "current");
-                var genus = $($this.find(".cell").get(0)).text();
-                var species = $($this.find(".cell").get(1)).text();
-                var comname = $($this.find(".cell").get(2)).text();
+                var genus = $($this.find(".cell").get(0))
+                    .text()
+                    .trim();
+                var species = $($this.find(".cell").get(1))
+                    .text()
+                    .trim();
+                var comname = $($this.find(".cell").get(2))
+                    .text()
+                    .trim();
                 var markupSightingsTable =
                     " <h2>Sightings (last 10)</h2> <h3 id='comname'>" +
                     comname +
                     "</h3> <div id='tableSightings' class='table'> <div class='row header'><div class='cell'> Person </div> <div class='cell'> Location </div> <div class='cell'> Sighted </div> </div> </div>";
                 var markupInfo =
-                    "<h2>Edit info</h2> <h3>Comname</h3> <form id='info-form' class='cf'> <div class='input'> <label for='input-Genus'>Genus</label> <input type='text' id='input-Genus' value='" +
+                    "<h2>Edit info</h2> <h3>" +
+                    comname +
+                    "</h3> <form id='info-form' class='cf'> <div class='input'> <label for='input-genus'>Genus</label> <input type='text' id='input-genus' value='" +
                     genus +
                     "'> </div> <div class='input'> <label for='input-species'>Species</label> <input type='text' id='input-species' value='" +
                     species +
-                    "'> </div> <div class='input'> <label for='input-comname'>Common Name</label> <input type='text' id='input-name' value='" +
+                    "'> </div> <div class='input'> <label for='input-comname'>Common Name</label> <input type='text' id='input-comname' value='" +
                     comname +
                     "'> </div> </form>";
                 var $markupInfo = $(markupInfo);
                 var $submit = $(
-                    "<input type='submit' value='Submit' id='input-submit'>"
+                    "<input type='submit' value='Update' id='input-submit'>"
                 );
                 $submit.on("click", function(e) {
                     e.preventDefault();
-                    console.log("submit");
+                    var inputGenus = $("#input-genus").val();
+                    var inputSpecies = $("#input-species").val();
+                    var inputComname = $("#input-comname").val();
+                    var data = {
+                        inputGenus: inputGenus,
+                        inputSpecies: inputSpecies,
+                        inputComname: inputComname,
+                        original: comname
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "/update",
+                        data: data,
+                        success: function(result) {
+                            toastr.success("Database updated succesfully");
+                            render(result, inputComname);
+                        },
+                        dataType: "json"
+                    });
                 });
                 $sightings.empty();
                 $sightings.append(markupSightingsTable);
@@ -71,6 +108,9 @@ $(document).ready(function() {
                 });
             });
             $table.append($flower);
+            if (currClick) {
+                currClick.trigger("click");
+            }
         });
-    });
+    }
 });
