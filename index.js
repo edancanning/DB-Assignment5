@@ -79,16 +79,15 @@ $(document).ready(function() {
                     if (person === "" || location === "" || sighted === "") {
                         toastr.error("Please fill in all the fields");
                     } else {
-                        console.log(Number(sighted.substr(0, 4)));
-                        console.log(Number(sighted.substr(4, 6)));
-                        console.log(Number(sighted.substr(8, 10)));
                         if (
                             sighted.charAt(4) !== "-" ||
                             sighted.charAt(7) !== "-" ||
                             sighted.length !== 10 ||
                             isNaN(Number(sighted.substr(0, 4))) ||
                             isNaN(Number(sighted.substr(5, 2))) ||
-                            isNaN(Number(sighted.substr(8, 2)))
+                            isNaN(Number(sighted.substr(8, 2))) ||
+                            Number(sighted.substr(5, 2)) > 12 ||
+                            Number(sighted.substr(8, 2)) > 31
                         ) {
                             toastr.error(
                                 "Please fill in sighted in the correct format YYYY-MM-DD"
