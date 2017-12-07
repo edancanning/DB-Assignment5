@@ -15,6 +15,10 @@ body {
     }
 }
 
+#insert-form {
+    margin-bottom: 2rem;
+}
+
 .title {
     margin-top: 3rem;
     font-family: "Lobster Two", cursive;
