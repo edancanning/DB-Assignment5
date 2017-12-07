@@ -10,6 +10,7 @@ $(document).ready(function() {
     }).done(render);
 
     function render(flowers, curr) {
+        console.log("render");
         $table.empty();
         $table.append(
             "<div class='row header'> <div class='cell'> Genus </div> <div class='cell'> Species </div> <div class='cell'> Common Name </div>"
@@ -60,13 +61,7 @@ $(document).ready(function() {
                 var markupInsert =
                     "<h2>Insert New Sighting</h2> <h3>" +
                     comname +
-                    "</h3> <form id='insert-form' class='cf'> <div class='input'> <label for='input-person'>Person</label> <input type='text' id='input-person' value='" +
-                    genus +
-                    "'> </div> <div class='input'> <label for='input-location'>Location</label> <input type='text' id='input-location' value='" +
-                    species +
-                    "'> </div> <div class='input'> <label for='input-sighted'>Sighted</label> <input type='text' id='input-sighted' value='" +
-                    comname +
-                    "'> </div> </form>";
+                    "</h3> <form id='insert-form' class='cf'> <div class='input'> <label for='input-person'>Person</label> <input type='text' id='input-person' placeholder='Person'> </div> <div class='input'> <label for='input-location'>Location</label> <input type='text' id='input-location' placeholder='Location'> </div> <div class='input'> <label for='input-sighted'>Sighted</label> <input type='text' id='input-sighted' placeholder='Sighted'> </div> </form>";
                 var $markupInsert = $(markupInsert);
                 var $markupInfo = $(markupInfo);
                 var $update = $(
@@ -75,6 +70,31 @@ $(document).ready(function() {
                 var $submit = $(
                     "<input type='submit' value='Submit' id='input-submit'>"
                 );
+
+                $submit.on("click", function(e) {
+                    e.preventDefault();
+                    var person = $("#input-person").val();
+                    var location = $("#input-location").val();
+                    var sighted = $("#input-sighted").val();
+                    var data = {
+                        person: person,
+                        location: location,
+                        sighted: sighted,
+                        name: comname
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "/insert",
+                        data: data,
+                        success: function(result) {
+                            toastr.success("Sighting inserted correctly");
+                            console.log(result);
+                            render(result, comname);
+                        },
+                        dataType: "json"
+                    });
+                });
+
                 $update.on("click", function(e) {
                     e.preventDefault();
                     var inputGenus = $("#input-genus").val();

@@ -64,5 +64,38 @@ app.post("/update", function(req, res) {
         }
     });
 });
+
+app.post("/insert", function(req, res) {
+    var person = req.body.person;
+    var location = req.body.location;
+    var sighted = req.body.sighted;
+    var name = req.body.name;
+    var sql =
+        "INSERT INTO SIGHTINGS VALUES('" +
+        name +
+        "','" +
+        person +
+        "','" +
+        location +
+        "','" +
+        sighted +
+        "')";
+    console.log(sql);
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
+        } else {
+            var sql = "SELECT * FROM FLOWERS";
+            db.all(sql, [], (err, rows) => {
+                if (err) {
+                    throw err;
+                }
+                res.writeHead(200, { "Content-Type": "application/json" });
+                res.end(JSON.stringify({ data: rows }));
+            });
+        }
+    });
+});
+
 app.listen(3000);
 console.log("Listening on 3000");
