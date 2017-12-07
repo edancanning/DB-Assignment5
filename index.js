@@ -76,23 +76,39 @@ $(document).ready(function() {
                     var person = $("#input-person").val();
                     var location = $("#input-location").val();
                     var sighted = $("#input-sighted").val();
-                    var data = {
-                        person: person,
-                        location: location,
-                        sighted: sighted,
-                        name: comname
-                    };
-                    $.ajax({
-                        type: "POST",
-                        url: "/insert",
-                        data: data,
-                        success: function(result) {
-                            toastr.success("Sighting inserted correctly");
-                            console.log(result);
-                            render(result, comname);
-                        },
-                        dataType: "json"
-                    });
+                    if (person === "" || location === "" || sighted === "") {
+                        toastr.error("Please fill in all the fields");
+                    } else {
+                        if (
+                            sighted.charAt(4) !== "-" ||
+                            sighted.charAt(7) !== "-" ||
+                            sighted.length !== 10
+                        ) {
+                            toastr.error(
+                                "Please fill in sighted in the correct format YYYY-MM-DD"
+                            );
+                        } else {
+                            var data = {
+                                person: person,
+                                location: location,
+                                sighted: sighted,
+                                name: comname
+                            };
+                            $.ajax({
+                                type: "POST",
+                                url: "/insert",
+                                data: data,
+                                success: function(result) {
+                                    toastr.success(
+                                        "Sighting inserted correctly"
+                                    );
+                                    console.log(result);
+                                    render(result, comname);
+                                },
+                                dataType: "json"
+                            });
+                        }
+                    }
                 });
 
                 $update.on("click", function(e) {
@@ -100,22 +116,30 @@ $(document).ready(function() {
                     var inputGenus = $("#input-genus").val();
                     var inputSpecies = $("#input-species").val();
                     var inputComname = $("#input-comname").val();
-                    var data = {
-                        inputGenus: inputGenus,
-                        inputSpecies: inputSpecies,
-                        inputComname: inputComname,
-                        original: comname
-                    };
-                    $.ajax({
-                        type: "POST",
-                        url: "/update",
-                        data: data,
-                        success: function(result) {
-                            toastr.success("Database updated succesfully");
-                            render(result, inputComname);
-                        },
-                        dataType: "json"
-                    });
+                    if (
+                        inputGenus === "" ||
+                        inputSpecies === "" ||
+                        inputComname === ""
+                    ) {
+                        toastr.error("Please fill in all the fields");
+                    } else {
+                        var data = {
+                            inputGenus: inputGenus,
+                            inputSpecies: inputSpecies,
+                            inputComname: inputComname,
+                            original: comname
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url: "/update",
+                            data: data,
+                            success: function(result) {
+                                toastr.success("Database updated succesfully");
+                                render(result, inputComname);
+                            },
+                            dataType: "json"
+                        });
+                    }
                 });
                 $sightings.empty();
                 $sightings.append(markupSightingsTable);

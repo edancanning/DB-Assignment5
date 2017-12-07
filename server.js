@@ -24,7 +24,7 @@ app.get("/sightings/:comname", function(req, res) {
     var sql =
         "SELECT * FROM SIGHTINGS WHERE NAME = '" +
         req.params.comname +
-        "' LIMIT 10";
+        "' ORDER BY SIGHTED DESC LIMIT 10";
     db.all(sql, [], (err, rows) => {
         if (err) {
             console.log(err);
