@@ -97,6 +97,8 @@ app.post("/insert", function(req, res) {
     db.all(sql, [], (err, rows) => {
         if (err) {
             console.log(err);
+            res.writeHead(500, { "Content-Type": "application/json" });
+            res.end(String(err.errno));
         } else {
             var sql = "SELECT * FROM FLOWERS";
             db.all(sql, [], (err, rows) => {

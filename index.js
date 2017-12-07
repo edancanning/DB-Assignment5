@@ -110,6 +110,14 @@ $(document).ready(function() {
                                     console.log(result);
                                     render(result, comname);
                                 },
+                                error: function(err) {
+                                    console.log("error", err);
+                                    if (err.responseText === "19") {
+                                        toastr.error(
+                                            "The sighting you are trying to submit is not unique"
+                                        );
+                                    }
+                                },
                                 dataType: "json"
                             });
                         }
