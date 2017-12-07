@@ -39,17 +39,31 @@ app.post("/update", function(req, res) {
     var species = req.body.inputSpecies;
     var comname = req.body.inputComname;
     var original = req.body.original;
-    var sql =
+
+    var sql1 =
         "UPDATE FLOWERS SET GENUS = '" +
         genus +
         "', SPECIES = '" +
         species +
         "', COMNAME = '" +
         comname +
-        "' WHERE comname = '" +
+        "' WHERE COMNAME = '" +
         original +
-        "'";
-    db.all(sql, [], (err, rows) => {
+        "';";
+    var sql2 =
+        "UPDATE SIGHTINGS SET NAME = '" +
+        comname +
+        "' WHERE NAME = '" +
+        original +
+        "';";
+
+    db.all(sql2, [], (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+
+    db.all(sql1, [], (err, rows) => {
         if (err) {
             console.log(err);
         } else {
