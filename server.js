@@ -41,18 +41,37 @@ app.post("/update", function(req, res) {
     var species = req.body.inputSpecies;
     var comname = req.body.inputComname;
     var original = req.body.original;
-    var sql =
+
+    var sql1 =
         "UPDATE FLOWERS SET GENUS = '" +
         genus +
         "', SPECIES = '" +
         species +
         "', COMNAME = '" +
         comname +
-        "' WHERE comname = '" +
+        "' WHERE COMNAME = '" +
         original +
+<<<<<<< HEAD
         "'";
     //Return the values now edited
     db.all(sql, [], (err, rows) => {
+=======
+        "';";
+    var sql2 =
+        "UPDATE SIGHTINGS SET NAME = '" +
+        comname +
+        "' WHERE NAME = '" +
+        original +
+        "';";
+
+    db.all(sql2, [], (err, rows) => {
+        if (err) {
+            console.log(err);
+        }
+    });
+
+    db.all(sql1, [], (err, rows) => {
+>>>>>>> a90aa561c8b4abc5bcc5e37cbc9c3fe051168d7c
         if (err) {
             console.log(err);
         } else {
@@ -87,6 +106,8 @@ app.post("/insert", function(req, res) {
     db.all(sql, [], (err, rows) => {
         if (err) {
             console.log(err);
+            res.writeHead(500, { "Content-Type": "application/json" });
+            res.end(String(err.errno));
         } else {
             var sql = "SELECT * FROM FLOWERS";
             db.all(sql, [], (err, rows) => {
