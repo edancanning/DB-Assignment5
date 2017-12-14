@@ -7,10 +7,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 var sqlite = require("sqlite3").verbose();
-var db = new sqlite.Database("flowers.db");
+var db = new sqlite.Database("flowers.db"); //initializing database
 
 app.use("/", express.static(__dirname));
 app.get("/flowers", function(req, res) {
+    // return all values as strings from table flowers on callback
     var sql = "SELECT * FROM FLOWERS";
     db.all(sql, [], (err, rows) => {
         if (err) {
@@ -20,6 +21,7 @@ app.get("/flowers", function(req, res) {
         res.end(JSON.stringify({ data: rows }));
     });
 });
+// return all values as string from sightings where Name = "  ", order by sighted in descending order, and limit by 10
 app.get("/sightings/:comname", function(req, res) {
     var sql =
         "SELECT * FROM SIGHTINGS WHERE NAME = '" +
@@ -33,7 +35,7 @@ app.get("/sightings/:comname", function(req, res) {
         res.end(JSON.stringify({ data: rows }));
     });
 });
-
+// edit a flower with a possible new genus, species, but not a new comname
 app.post("/update", function(req, res) {
     var genus = req.body.inputGenus;
     var species = req.body.inputSpecies;
@@ -78,7 +80,7 @@ app.post("/update", function(req, res) {
         }
     });
 });
-
+//create a new tupple into sightings
 app.post("/insert", function(req, res) {
     var person = req.body.person;
     var location = req.body.location;
@@ -94,6 +96,7 @@ app.post("/insert", function(req, res) {
         "','" +
         sighted +
         "')";
+    //return the newley created values
     db.all(sql, [], (err, rows) => {
         if (err) {
             console.log(err);
@@ -111,6 +114,6 @@ app.post("/insert", function(req, res) {
         }
     });
 });
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001; //local host initialization and listen for http requests
 app.listen(port);
 console.log("Listening on " + port);
