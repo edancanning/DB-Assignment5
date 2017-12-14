@@ -7,12 +7,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 var sqlite = require("sqlite3").verbose();
-var db = new sqlite.Database("flowers.db"); //initializing database
+var db = new sqlite.Database("flowers.db");  //initializing database 
 
 app.use("/", express.static(__dirname));
-app.get("/flowers", function(req, res) {
-    // return all values as strings from table flowers on callback
-    var sql = "SELECT * FROM FLOWERS";
+app.get("/flowers", function(req, res) {   // return all values as strings from table flowers on callback
+    var sql = "SELECT * FROM FLOWERS";    
     db.all(sql, [], (err, rows) => {
         if (err) {
             console.log(err);
@@ -21,8 +20,9 @@ app.get("/flowers", function(req, res) {
         res.end(JSON.stringify({ data: rows }));
     });
 });
-// return all values as string from sightings where Name = "  ", order by sighted in descending order, and limit by 10
-app.get("/sightings/:comname", function(req, res) {
+ // return all values as string from sightings where Name = "  ", order by sighted in descending order, and limit by 10
+app.get("/sightings/:comname", function(req, res) { 
+
     var sql =
         "SELECT * FROM SIGHTINGS WHERE NAME = '" +
         req.params.comname +
@@ -96,7 +96,7 @@ app.post("/insert", function(req, res) {
         "','" +
         sighted +
         "')";
-    //return the newley created values
+        //return the newley created values
     db.all(sql, [], (err, rows) => {
         if (err) {
             console.log(err);
@@ -114,6 +114,6 @@ app.post("/insert", function(req, res) {
         }
     });
 });
-var port = process.env.PORT || 3001; //local host initialization and listen for http requests
+var port = process.env.PORT || 3000;        //local host initialization and listen for http requests  
 app.listen(port);
 console.log("Listening on " + port);
